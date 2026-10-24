@@ -1,0 +1,36 @@
+<?php
+
+namespace Database\Factories;
+
+use App\Models\Category;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
+
+/**
+ * @extends Factory<Category>
+ */
+class CategoryFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        $name = fake()->randomElement([
+            'Nasi Box',
+            'Snack Box',
+            'Tumpeng',
+            'Prasmanan',
+            'Vegetarian',
+            'Minuman',
+            'Kue & Dessert',
+        ]);
+
+        return [
+            'name' => $name,
+            'slug' => Str::slug($name).'-'.Str::lower(Str::random(5)),
+        ];
+    }
+}

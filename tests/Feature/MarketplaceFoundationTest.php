@@ -2,8 +2,10 @@
 
 use App\Models\User;
 
-test('the landing page is publicly accessible', function () {
-    $this->get(route('home'))->assertOk();
+test('the catalogue is the public entry point', function () {
+    $this->get(route('home'))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page->component('catalog/index'));
 });
 
 test('guests cannot reach the dashboard', function () {
