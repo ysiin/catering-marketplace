@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Policies\MenuPolicy;
 use Database\Factories\MenuFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -38,6 +40,7 @@ use Illuminate\Support\Carbon;
     'photo_path',
     'is_available',
 ])]
+#[UsePolicy(MenuPolicy::class)]
 class Menu extends Model
 {
     /** @use HasFactory<MenuFactory> */

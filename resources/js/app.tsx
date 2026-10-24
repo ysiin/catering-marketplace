@@ -5,6 +5,7 @@ import { initializeTheme } from '@/hooks/use-appearance';
 import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
 import MarketplaceLayout from '@/layouts/marketplace-layout';
+import MerchantLayout from '@/layouts/merchant-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
@@ -15,6 +16,8 @@ void createInertiaApp({
         switch (true) {
             case name === 'catalog/index':
                 return MarketplaceLayout;
+            case name.startsWith('merchant/'):
+                return [AppLayout, MerchantLayout];
             case name.startsWith('auth/'):
                 return AuthLayout;
             case name.startsWith('settings/'):

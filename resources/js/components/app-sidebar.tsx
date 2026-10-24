@@ -1,5 +1,11 @@
-import { Link } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-react';
+import { Link, usePage } from '@inertiajs/react';
+import {
+    BookOpen,
+    FolderGit2,
+    LayoutGrid,
+    Store,
+    UtensilsCrossed,
+} from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -13,18 +19,17 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
-import type { NavItem } from '@/types';
-
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
-];
+import { dashboard, home } from '@/routes';
+import { index as menuIndex } from '@/routes/merchant/menus';
+import { edit as editMerchantProfile } from '@/routes/merchant/profile';
+import type { Auth, NavItem } from '@/types';
 
 const footerNavItems: NavItem[] = [
+    {
+        title: 'Katalog Sekotak',
+        href: home(),
+        icon: Store,
+    },
     {
         title: 'Repository',
         href: 'https://github.com/laravel/react-starter-kit',
@@ -38,6 +43,30 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
+    const { auth } = usePage<{ auth: Auth }>().props;
+
+    const mainNavItems: NavItem[] = [
+        {
+            title: 'Dashboard',
+            href: dashboard(),
+            icon: LayoutGrid,
+        },
+        ...(auth?.role === 'merchant'
+            ? [
+                  {
+                      title: 'Menu Saya',
+                      href: menuIndex(),
+                      icon: UtensilsCrossed,
+                  },
+                  {
+                      title: 'Profil Katering',
+                      href: editMerchantProfile(),
+                      icon: Store,
+                  },
+              ]
+            : []),
+    ];
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
