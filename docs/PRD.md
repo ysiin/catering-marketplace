@@ -145,6 +145,34 @@ pending_payment ──(upload bukti transfer)──► pending_confirmation
 | P-02 | Halaman katalog publik (tanpa login) | Must |
 | P-03 | Halaman 404/403/500 ramah | Should |
 
+### 4.4 Invoice (Kebutuhan Lintas Portal — dikonfirmasi user)
+
+Invoice adalah **satu record** (`orders.invoice_no` + `order_items` + `payments`) yang
+diakses oleh **dua pihak lewat dua pintu**, bukan dua dokumen terpisah.
+
+| ID | Kebutuhan | Prioritas |
+|---|---|---|
+| I-01 | Setiap order menghasilkan nomor invoice otomatis (`INV-YYYYMMDD-XXXX`) | Must |
+| I-02 | Satu halaman invoice (`GET /orders/{order_no}/invoice`) dirender identik untuk kedua pihak | Must |
+| I-03 | Kantor masuk dari `/orders`, merchant dari `/merchant/orders` | Must |
+| I-04 | Akses dibatasi **hanya** pemilik order (kantor) + merchant pemilik pesanan → pihak lain 403 | Must |
+| I-05 | Invoice menampilkan: identitas merchant & kantor, tanggal pengiriman, rincian item (menu/harga/porsi/subtotal), subtotal, kode unik, total, status, instruksi pembayaran | Must |
+| I-06 | Angka invoice diambil dari snapshot saat checkout, tidak dihitung ulang dari `menus.price` | Must |
+| I-07 | Tombol **Cetak** via print CSS (tanpa dependency baru, tanpa PDF server-side) | Must |
+| I-08 | Tidak ada link berbagi publik/bertoken — hanya 2 pihak (keputusan user 24 Okt 2026) | Must |
+
+**Rincian tampilan invoice (dikonfirmasi user):**
+
+```
+Header    : logo merchant, nama merchant, nomor invoice, tanggal terbit
+Pihak     : "Ditagihkan ke" (kantor) | "Dari" (merchant: alamat, telepon)
+Info      : tanggal pengiriman, status pesanan
+Tabel     : Menu | Harga/porsi | Porsi | Subtotal
+Ringkasan : Subtotal, Kode Unik, TOTAL BAYAR
+Pembayaran: bank + no. rekening + nama pemilik (+ QRIS statis bila ada)
+Footer    : tombol Cetak (print CSS, layout A4 rapi)
+```
+
 ---
 
 ## 5. Model Data (Rencana Skema)
@@ -218,6 +246,7 @@ Sesuai permintaan spec ("gunakan manajemen kesalahan untuk menangani eror"):
 | Race condition nomor order | Generate di dalam transaksi DB, kolom `unique` sebagai pengaman akhir; retry bila bentrok |
 | Harga diubah lewat request | Harga **tidak** diterima dari request; selalu dihitung ulang di server dari `menus.price` |
 | Akses lintas akun | Policy: merchant hanya order/menu miliknya, kantor hanya order miliknya → 403 ramah |
+| Invoice diakses pihak ketiga | `OrderPolicy::view()` → 403 (bukan 404), tanpa kebocoran keberadaan data |
 | Invoice/order tak ditemukan | Route model binding + halaman 404 kustom |
 | Exception tak terduga | Laravel handler + render halaman error Inertia; log terstruktur |
 | Feedback UI | `alert-error.tsx` + `input-error.tsx` untuk error form; `sonner` untuk toast |
@@ -272,7 +301,7 @@ Setiap milestone: implementasi vertikal (backend + frontend + test) → Pint + P
 | **M1 — Merchant & Menu** | Profil merchant, CRUD menu + upload foto, kategori | M-02..M-05 lolos; Policy kepemilikan menu teruji |
 | **M2 — Pencarian** | Landing + `/catering` + etalase merchant; filter kota/kategori/harga + sort + paginasi | C-02, C-03, P-01, P-02 lolos; filter kombinasi teruji |
 | **M3 — Checkout** | Keranjang → porsi + tanggal kirim + alamat; snapshot harga; generate nomor | C-04 lolos; validasi tanggal/porsi/harga teruji |
-| **M4 — Order, Pembayaran & Invoice** | Daftar order 2 sisi, upload bukti, verifikasi merchant, halaman invoice bersama + cetak | M-06, M-07, C-05, C-06, C-07 lolos; otorisasi invoice teruji |
+| **M4 — Order, Pembayaran & Invoice** | Daftar order 2 sisi, upload bukti, verifikasi merchant, **satu halaman invoice** yang diakses kedua pihak + cetak (print CSS) | M-06, M-07, C-05, C-06, C-07, **I-01..I-08** lolos; otorisasi invoice teruji (pihak ketiga 403); angka invoice identik di kedua sisi |
 | **M5 — Hardening** | Error pages, lapor merchant, polish responsif, README setup, suite penuh hijau | Semua test hijau; `composer run ci:check` bersih |
 
 ---
@@ -288,6 +317,8 @@ Setiap milestone: implementasi vertikal (backend + frontend + test) → Pint + P
 | O5 | Database | **SQLite** untuk lokal (PHP lokal tanpa `pdo_pgsql`); PostgreSQL/MySQL jadi target produksi |
 | O6 | Folder baru | **Disetujui:** `app/Services/`, `app/Enums/`, `app/Policies/`, controller `Merchant/` & `Catalog/` |
 | O7 | Lokasi dokumen | `docs/` |
+| O8 | Format cetak invoice | **Print CSS** (tanpa package baru) |
+| O9 | Hak akses invoice | **Hanya 2 pihak** (kantor pemesan + merchant pemilik); tanpa link berbagi publik |
 
 ---
 
