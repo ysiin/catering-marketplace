@@ -10,6 +10,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
 import PasskeyVerify from '@/components/passkey-verify';
+import { register } from '@/routes';
 
 type Props = {
     status?: string;
@@ -99,6 +100,11 @@ export default function Login({ status, canResetPassword }: Props) {
                     {status}
                 </div>
             )}
+
+            <div className="text-center text-sm text-muted-foreground">
+                <span>Belum punya akun? </span>
+                <TextLink href={register()}>Daftar</TextLink>
+            </div>
         </>
     );
 }

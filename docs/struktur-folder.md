@@ -6,16 +6,16 @@ paham konvensi tanpa eksplorasi ulang.
 
 ## 1. Gambaran Umum Stack
 
-| Lapisan | Teknologi | Keterangan |
-|---|---|---|
-| Backend | Laravel 13, PHP ^8.3 | Pola MVC + Inertia, bukan REST API murni |
-| Auth | Laravel Fortify | Login, register, reset password, 2FA, passkey |
-| Frontend | React 19 + Inertia v3 + TypeScript | SPA tanpa API terpisah |
-| Styling | Tailwind CSS v4 + shadcn/ui | Komponen di `resources/js/components/ui` |
-| Route typing | Laravel Wayfinder | Fungsi TS auto-generate di `resources/js/actions` & `resources/js/routes` |
-| Test | Pest 5 | `php artisan make:test --pest {Nama}` |
-| Quality | Pint + PHPStan (Larastan 3) | `vendor/bin/pint --dirty --format agent`, `phpstan analyse` |
-| DB lokal | SQLite (`database/database.sqlite`) | **Keputusan final.** PHP lokal (Herd Lite 8.5.12) dikompilasi `--disable-all` tanpa ekstensi `pdo_pgsql`, sehingga PostgreSQL tidak bisa dipakai. SQLite adalah default resmi Laravel, nol setup, dan sudah ter-migrate. PostgreSQL tetap jadi target produksi (lihat §11). |
+| Lapisan      | Teknologi                           | Keterangan                                                                                                                                                                                                                                                                  |
+| ------------ | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Backend      | Laravel 13, PHP ^8.3                | Pola MVC + Inertia, bukan REST API murni                                                                                                                                                                                                                                    |
+| Auth         | Laravel Fortify                     | Login, register, reset password, 2FA, passkey                                                                                                                                                                                                                               |
+| Frontend     | React 19 + Inertia v3 + TypeScript  | SPA tanpa API terpisah                                                                                                                                                                                                                                                      |
+| Styling      | Tailwind CSS v4 + shadcn/ui         | Komponen di `resources/js/components/ui`                                                                                                                                                                                                                                    |
+| Route typing | Laravel Wayfinder                   | Fungsi TS auto-generate di `resources/js/actions` & `resources/js/routes`                                                                                                                                                                                                   |
+| Test         | Pest 5                              | `php artisan make:test --pest {Nama}`                                                                                                                                                                                                                                       |
+| Quality      | Pint + PHPStan (Larastan 3)         | `vendor/bin/pint --dirty --format agent`, `phpstan analyse`                                                                                                                                                                                                                 |
+| DB lokal     | SQLite (`database/database.sqlite`) | **Keputusan final.** PHP lokal (Herd Lite 8.5.12) dikompilasi `--disable-all` tanpa ekstensi `pdo_pgsql`, sehingga PostgreSQL tidak bisa dipakai. SQLite adalah default resmi Laravel, nol setup, dan sudah ter-migrate. PostgreSQL tetap jadi target produksi (lihat §11). |
 
 ## 2. Peta Folder
 
@@ -70,6 +70,7 @@ tests/
 ## 3. Best Practice per Folder (hasil baca skills + kode eksisting)
 
 ### `app/Http/Controllers/`
+
 - Satu controller per resource/subdomain, method ramping: validasi → delegasi → respon.
 - Logic bisnis > 1 langkah (hitung total, snapshot harga, generate nomor) → pindah ke
   `app/Services/` atau action class (lihat `architecture.md`: `CreateOrderAction`).
@@ -80,29 +81,35 @@ tests/
   jangan `app()`/`resolve()`.
 
 ### `app/Http/Requests/`
+
 - Selalu pakai Form Request untuk input user (pola `ProfileUpdateRequest`).
 - Rules komplek/shared → taruh di trait `app/Concerns/` (contoh `ProfileValidationRules`).
 - Return type: `array<string, ValidationRule|array<mixed>|string>`.
 
 ### `app/Models/`
+
 - PHPDoc `@property` lengkap + `$casts()` method (bukan property `$casts`).
 - Pakai atribut `#[Fillable([...])]`, `#[Hidden([...])]` ala model `User` eksisting.
 - Relasi pakai return type (`HasMany`, `BelongsTo`), nama deskriptif (`merchant()`, bukan `m()`).
 - Enum PHP untuk status/role (`OrderStatus`, `UserRole`) — key TitleCase.
 
 ### `app/Services/` (folder baru yang akan dibuat)
+
 - Diizinkan & dianjurkan skill `architecture.md` ("Extract Focused Business Operations").
 - Contoh: `OrderService::createFromCheckout()`, `InvoiceService::generateNo()`.
 
 ### `app/Http/Middleware/`
+
 - `HandleInertiaRequests`: tempat share props global (auth user, flash). Tambah prop global di sini.
 
 ### `routes/`
+
 - Grup per subdomain + middleware: `Route::middleware(['auth','verified'])->group(...)`.
 - Selalu `->name(...)`; generate URL pakai `route()` di PHP dan Wayfinder di TS.
 - Setelah tambah route → `php artisan wayfinder:generate` agar fungsi TS ter-refresh.
 
 ### `resources/js/pages/`
+
 - Satu route = satu file page. Form pakai `useForm`, navigasi pakai `<Link>` / `router`,
   JANGAN hardcode URL — import dari `@/actions` atau `@/routes` (Wayfinder).
 - Daftar baru di katalog pakai deferred props Inertia v3 (`Inertia::defer()`) + skeleton
@@ -110,15 +117,18 @@ tests/
 - Error validasi tampil via `input-error.tsx` + `alert-error.tsx`; toast sukses via flash.
 
 ### `resources/js/components/`
+
 - Cek komponen existing dulu sebelum bikin baru (ada 20+ termasuk dialog, sheet, select).
 - `ui/` = shadcn murni, jangan modifikasi manual.
 
 ### `database/`
+
 - Migrasi: FK `constrained()->cascadeOnDelete()` / `nullOnDelete()` sesuai domain,
   index untuk kolom filter (city, status, tanggal), unique untuk nomor order/invoice.
 - Factory + seeder WAJIB untuk tiap model baru (aturan `laravel/core`).
 
 ### `tests/`
+
 - Pest, gaya `test('...', function () {...})` + `expect()`. Feature test untuk HTTP,
   Unit untuk service murni.
 - Baca skill `testing-best-practices` sebelum nulis test. Jalankan test tersempit dulu:

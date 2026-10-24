@@ -1,7 +1,10 @@
+export type UserRole = 'customer' | 'merchant';
+
 export type User = {
     id: number;
     name: string;
     email: string;
+    role: UserRole;
     avatar?: string;
     email_verified_at: string | null;
     created_at: string;
@@ -11,6 +14,7 @@ export type User = {
 
 export type Auth = {
     user: User;
+    role: UserRole | null;
 };
 
 export type Passkey = {

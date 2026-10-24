@@ -25,13 +25,13 @@ dan tempat katering mengelola profil, menu, serta pesanan.
 
 ### 1.1 Tujuan MVP
 
-| # | Tujuan | Ukuran keberhasilan |
-|---|---|---|
-| G1 | Kantor bisa menemukan katering lewat pencarian & filter | Ada ≥1 jalur: keyword + filter lokasi + filter jenis makanan, hasil relevan & terpaginasi |
-| G2 | Kantor bisa memesan dengan jumlah porsi & tanggal pengiriman | Checkout menyimpan porsi + tanggal, validasi tanggal tidak boleh lampau |
-| G3 | Invoice otomatis & bisa diakses kedua pihak | Setiap order menghasilkan nomor invoice; merchant & kantor punya akses terkontrol |
-| G4 | Merchant bisa kelola menu lengkap (deskripsi, foto, harga) | CRUD menu dengan foto wajib, tervalidasi server-side |
-| G5 | Kedua portal aman | Otorisasi per-resource (Policy), route terproteksi role, tidak ada akses lintas akun |
+| #   | Tujuan                                                       | Ukuran keberhasilan                                                                       |
+| --- | ------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
+| G1  | Kantor bisa menemukan katering lewat pencarian & filter      | Ada ≥1 jalur: keyword + filter lokasi + filter jenis makanan, hasil relevan & terpaginasi |
+| G2  | Kantor bisa memesan dengan jumlah porsi & tanggal pengiriman | Checkout menyimpan porsi + tanggal, validasi tanggal tidak boleh lampau                   |
+| G3  | Invoice otomatis & bisa diakses kedua pihak                  | Setiap order menghasilkan nomor invoice; merchant & kantor punya akses terkontrol         |
+| G4  | Merchant bisa kelola menu lengkap (deskripsi, foto, harga)   | CRUD menu dengan foto wajib, tervalidasi server-side                                      |
+| G5  | Kedua portal aman                                            | Otorisasi per-resource (Policy), route terproteksi role, tidak ada akses lintas akun      |
 
 ### 1.2 Non-Tujuan MVP (Backlog v0.2+)
 
@@ -45,11 +45,11 @@ dan tempat katering mengelola profil, menu, serta pesanan.
 
 ## 2. Aktor & Peran
 
-| Aktor | Deskripsi | Cara masuk |
-|---|---|---|
-| **Kantor (Customer)** | Perwakilan perusahaan kantor yang memesan makan siang karyawan | Registrasi/Login, role `customer` (default) |
-| **Merchant** | Perusahaan katering yang menyediakan menu | Registrasi/Login, role `merchant` |
-| **Tamu (Guest)** | Pengunjung belum login | Bisa lihat landing & katalog, tidak bisa checkout |
+| Aktor                 | Deskripsi                                                      | Cara masuk                                        |
+| --------------------- | -------------------------------------------------------------- | ------------------------------------------------- |
+| **Kantor (Customer)** | Perwakilan perusahaan kantor yang memesan makan siang karyawan | Registrasi/Login, role `customer` (default)       |
+| **Merchant**          | Perusahaan katering yang menyediakan menu                      | Registrasi/Login, role `merchant`                 |
+| **Tamu (Guest)**      | Pengunjung belum login                                         | Bisa lihat landing & katalog, tidak bisa checkout |
 
 > **Keputusan:** sesuai arahan user, MVP hanya punya **2 aktor** (Customer + Merchant),
 > **tanpa admin**. Merchant mendaftar bebas dan langsung aktif. Mitigasi penyalahgunaan:
@@ -114,52 +114,52 @@ pending_payment ──(upload bukti transfer)──► pending_confirmation
 
 ### 4.1 Portal Merchant
 
-| ID | Kebutuhan | Prioritas |
-|---|---|---|
-| M-01 | Registrasi & login sebagai merchant | Must |
-| M-02 | Kelola profil: nama perusahaan, alamat, kontak, deskripsi, kota, logo | Must |
-| M-03 | Tambah menu (deskripsi + foto + harga **wajib**) | Must |
-| M-04 | Edit & hapus menu | Must |
-| M-05 | Atur ketersediaan menu (`is_available`) | Should |
-| M-06 | Daftar semua order masuk + akses invoice | Must |
-| M-07 | Konfirmasi/tolak order, verifikasi bukti bayar, tandai selesai | Must |
-| M-08 | Data rekening/QRIS statis untuk instruksi pembayaran | Should |
+| ID   | Kebutuhan                                                             | Prioritas |
+| ---- | --------------------------------------------------------------------- | --------- |
+| M-01 | Registrasi & login sebagai merchant                                   | Must      |
+| M-02 | Kelola profil: nama perusahaan, alamat, kontak, deskripsi, kota, logo | Must      |
+| M-03 | Tambah menu (deskripsi + foto + harga **wajib**)                      | Must      |
+| M-04 | Edit & hapus menu                                                     | Must      |
+| M-05 | Atur ketersediaan menu (`is_available`)                               | Should    |
+| M-06 | Daftar semua order masuk + akses invoice                              | Must      |
+| M-07 | Konfirmasi/tolak order, verifikasi bukti bayar, tandai selesai        | Must      |
+| M-08 | Data rekening/QRIS statis untuk instruksi pembayaran                  | Should    |
 
 ### 4.2 Portal Kantor (Customer)
 
-| ID | Kebutuhan | Prioritas |
-|---|---|---|
-| C-01 | Registrasi & login sebagai kantor | Must |
-| C-02 | Cari katering: keyword + filter lokasi + filter jenis makanan | Must |
-| C-03 | Lihat etalase merchant & detail menu | Must |
-| C-04 | Pembelian: pilih menu, jumlah porsi, tanggal pengiriman | Must |
-| C-05 | Invoice otomatis dapat diakses kantor & merchant | Must |
-| C-06 | Riwayat pesanan + detail status | Must |
-| C-07 | Upload bukti transfer | Should |
+| ID   | Kebutuhan                                                     | Prioritas |
+| ---- | ------------------------------------------------------------- | --------- |
+| C-01 | Registrasi & login sebagai kantor                             | Must      |
+| C-02 | Cari katering: keyword + filter lokasi + filter jenis makanan | Must      |
+| C-03 | Lihat etalase merchant & detail menu                          | Must      |
+| C-04 | Pembelian: pilih menu, jumlah porsi, tanggal pengiriman       | Must      |
+| C-05 | Invoice otomatis dapat diakses kantor & merchant              | Must      |
+| C-06 | Riwayat pesanan + detail status                               | Must      |
+| C-07 | Upload bukti transfer                                         | Should    |
 
 ### 4.3 Publik
 
-| ID | Kebutuhan | Prioritas |
-|---|---|---|
-| P-01 | Landing page dengan pencarian | Must |
-| P-02 | Halaman katalog publik (tanpa login) | Must |
-| P-03 | Halaman 404/403/500 ramah | Should |
+| ID   | Kebutuhan                            | Prioritas |
+| ---- | ------------------------------------ | --------- |
+| P-01 | Landing page dengan pencarian        | Must      |
+| P-02 | Halaman katalog publik (tanpa login) | Must      |
+| P-03 | Halaman 404/403/500 ramah            | Should    |
 
 ### 4.4 Invoice (Kebutuhan Lintas Portal — dikonfirmasi user)
 
 Invoice adalah **satu record** (`orders.invoice_no` + `order_items` + `payments`) yang
 diakses oleh **dua pihak lewat dua pintu**, bukan dua dokumen terpisah.
 
-| ID | Kebutuhan | Prioritas |
-|---|---|---|
-| I-01 | Setiap order menghasilkan nomor invoice otomatis (`INV-YYYYMMDD-XXXX`) | Must |
-| I-02 | Satu halaman invoice (`GET /orders/{order_no}/invoice`) dirender identik untuk kedua pihak | Must |
-| I-03 | Kantor masuk dari `/orders`, merchant dari `/merchant/orders` | Must |
-| I-04 | Akses dibatasi **hanya** pemilik order (kantor) + merchant pemilik pesanan → pihak lain 403 | Must |
-| I-05 | Invoice menampilkan: identitas merchant & kantor, tanggal pengiriman, rincian item (menu/harga/porsi/subtotal), subtotal, kode unik, total, status, instruksi pembayaran | Must |
-| I-06 | Angka invoice diambil dari snapshot saat checkout, tidak dihitung ulang dari `menus.price` | Must |
-| I-07 | Tombol **Cetak** via print CSS (tanpa dependency baru, tanpa PDF server-side) | Must |
-| I-08 | Tidak ada link berbagi publik/bertoken — hanya 2 pihak (keputusan user 24 Okt 2026) | Must |
+| ID   | Kebutuhan                                                                                                                                                                | Prioritas |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- |
+| I-01 | Setiap order menghasilkan nomor invoice otomatis (`INV-YYYYMMDD-XXXX`)                                                                                                   | Must      |
+| I-02 | Satu halaman invoice (`GET /orders/{order_no}/invoice`) dirender identik untuk kedua pihak                                                                               | Must      |
+| I-03 | Kantor masuk dari `/orders`, merchant dari `/merchant/orders`                                                                                                            | Must      |
+| I-04 | Akses dibatasi **hanya** pemilik order (kantor) + merchant pemilik pesanan → pihak lain 403                                                                              | Must      |
+| I-05 | Invoice menampilkan: identitas merchant & kantor, tanggal pengiriman, rincian item (menu/harga/porsi/subtotal), subtotal, kode unik, total, status, instruksi pembayaran | Must      |
+| I-06 | Angka invoice diambil dari snapshot saat checkout, tidak dihitung ulang dari `menus.price`                                                                               | Must      |
+| I-07 | Tombol **Cetak** via print CSS (tanpa dependency baru, tanpa PDF server-side)                                                                                            | Must      |
+| I-08 | Tidak ada link berbagi publik/bertoken — hanya 2 pihak (keputusan user 24 Okt 2026)                                                                                      | Must      |
 
 **Rincian tampilan invoice (dikonfirmasi user):**
 
@@ -237,19 +237,19 @@ payments
 
 Sesuai permintaan spec ("gunakan manajemen kesalahan untuk menangani eror"):
 
-| Area | Penanganan |
-|---|---|
-| Input katalog/filter | `array_filter` + validasi tipe query; nilai filter tak dikenal diabaikan, tidak error |
-| Upload foto menu | Validasi `image|mimes:jpg,jpeg,png,webp|max:2048`; gagal → pesan error, file lama dipertahankan |
-| Upload bukti bayar | Validasi gambar + ukuran; gagal → toast error, status order tidak berubah |
-| Checkout | Validasi: tanggal tidak boleh < **H+1** (besok) dan tidak melewati batas wajar, porsi ≥ `min_order`, menu wajib tersedia & milik merchant yang sama |
-| Race condition nomor order | Generate di dalam transaksi DB, kolom `unique` sebagai pengaman akhir; retry bila bentrok |
-| Harga diubah lewat request | Harga **tidak** diterima dari request; selalu dihitung ulang di server dari `menus.price` |
-| Akses lintas akun | Policy: merchant hanya order/menu miliknya, kantor hanya order miliknya → 403 ramah |
-| Invoice diakses pihak ketiga | `OrderPolicy::view()` → 403 (bukan 404), tanpa kebocoran keberadaan data |
-| Invoice/order tak ditemukan | Route model binding + halaman 404 kustom |
-| Exception tak terduga | Laravel handler + render halaman error Inertia; log terstruktur |
-| Feedback UI | `alert-error.tsx` + `input-error.tsx` untuk error form; `sonner` untuk toast |
+| Area                         | Penanganan                                                                                                                                          |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Input katalog/filter         | `array_filter` + validasi tipe query; nilai filter tak dikenal diabaikan, tidak error                                                               |
+| Upload foto menu             | Validasi `image                                                                                                                                     | mimes:jpg,jpeg,png,webp | max:2048`; gagal → pesan error, file lama dipertahankan |
+| Upload bukti bayar           | Validasi gambar + ukuran; gagal → toast error, status order tidak berubah                                                                           |
+| Checkout                     | Validasi: tanggal tidak boleh < **H+1** (besok) dan tidak melewati batas wajar, porsi ≥ `min_order`, menu wajib tersedia & milik merchant yang sama |
+| Race condition nomor order   | Generate di dalam transaksi DB, kolom `unique` sebagai pengaman akhir; retry bila bentrok                                                           |
+| Harga diubah lewat request   | Harga **tidak** diterima dari request; selalu dihitung ulang di server dari `menus.price`                                                           |
+| Akses lintas akun            | Policy: merchant hanya order/menu miliknya, kantor hanya order miliknya → 403 ramah                                                                 |
+| Invoice diakses pihak ketiga | `OrderPolicy::view()` → 403 (bukan 404), tanpa kebocoran keberadaan data                                                                            |
+| Invoice/order tak ditemukan  | Route model binding + halaman 404 kustom                                                                                                            |
+| Exception tak terduga        | Laravel handler + render halaman error Inertia; log terstruktur                                                                                     |
+| Feedback UI                  | `alert-error.tsx` + `input-error.tsx` untuk error form; `sonner` untuk toast                                                                        |
 
 ---
 
@@ -271,17 +271,17 @@ Sesuai permintaan spec ("gunakan manajemen kesalahan untuk menangani eror"):
 
 ## 8. Arsitektur & Konvensi Implementasi
 
-| Aspek | Keputusan |
-|---|---|
-| Gaya API | **Inertia (bukan REST API terpisah)** — mengikuti konvensi starter-kit |
-| Halaman | 1 route = 1 file di `resources/js/pages`, Blade hanya root `app.blade.php` |
-| Logic bisnis | Controller ramping → `app/Services/` (folder baru, didukung skill architecture) |
-| Validasi | Form Request + trait di `app/Concerns/` |
-| Status/Role | PHP Enum (`UserRole`, `OrderStatus`, `PaymentStatus`) dengan key TitleCase |
-| Relasi & query | Eloquent + eager loading (`with()`) untuk cegah N+1; `orderBy` deterministik |
-| Route FE | Wayfinder (`@/actions`, `@/routes`), bukan URL hardcode |
-| UI | Tailwind v4 + shadcn components existing, wajib responsif (mobile-first) |
-| Test | Pest feature test per kebutuhan fungsional + failure mode |
+| Aspek          | Keputusan                                                                       |
+| -------------- | ------------------------------------------------------------------------------- |
+| Gaya API       | **Inertia (bukan REST API terpisah)** — mengikuti konvensi starter-kit          |
+| Halaman        | 1 route = 1 file di `resources/js/pages`, Blade hanya root `app.blade.php`      |
+| Logic bisnis   | Controller ramping → `app/Services/` (folder baru, didukung skill architecture) |
+| Validasi       | Form Request + trait di `app/Concerns/`                                         |
+| Status/Role    | PHP Enum (`UserRole`, `OrderStatus`, `PaymentStatus`) dengan key TitleCase      |
+| Relasi & query | Eloquent + eager loading (`with()`) untuk cegah N+1; `orderBy` deterministik    |
+| Route FE       | Wayfinder (`@/actions`, `@/routes`), bukan URL hardcode                         |
+| UI             | Tailwind v4 + shadcn components existing, wajib responsif (mobile-first)        |
+| Test           | Pest feature test per kebutuhan fungsional + failure mode                       |
 
 **Struktur baru yang direncanakan** (perlu approval sesuai batasan AGENTS.md):
 `app/Services/`, `app/Enums/`, `app/Policies/`, `app/Http/Controllers/Merchant/`,
@@ -295,43 +295,44 @@ Sesuai permintaan spec ("gunakan manajemen kesalahan untuk menangani eror"):
 Setiap milestone: implementasi vertikal (backend + frontend + test) → Pint + PHPStan +
 `npm run build` lolos → commit + push ke `main`.
 
-| Milestone | Deliverable | Definisi Selesai |
-|---|---|---|
-| **M0 — Fondasi** | Set DB lokal ke SQLite (PHP lokal tanpa `pdo_pgsql`); enum `UserRole`; kolom `role`; layout & navigasi publik; factory/seeder | Test role & guard hijau; app jalan di SQLite |
-| **M1 — Merchant & Menu** | Profil merchant, CRUD menu + upload foto, kategori | M-02..M-05 lolos; Policy kepemilikan menu teruji |
-| **M2 — Pencarian** | Landing + `/catering` + etalase merchant; filter kota/kategori/harga + sort + paginasi | C-02, C-03, P-01, P-02 lolos; filter kombinasi teruji |
-| **M3 — Checkout** | Keranjang → porsi + tanggal kirim + alamat; snapshot harga; generate nomor | C-04 lolos; validasi tanggal/porsi/harga teruji |
+| Milestone                            | Deliverable                                                                                                                   | Definisi Selesai                                                                                                                     |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **M0 — Fondasi**                     | Set DB lokal ke SQLite (PHP lokal tanpa `pdo_pgsql`); enum `UserRole`; kolom `role`; layout & navigasi publik; factory/seeder | Test role & guard hijau; app jalan di SQLite                                                                                         |
+| **M1 — Merchant & Menu**             | Profil merchant, CRUD menu + upload foto, kategori                                                                            | M-02..M-05 lolos; Policy kepemilikan menu teruji                                                                                     |
+| **M2 — Pencarian**                   | Landing + `/catering` + etalase merchant; filter kota/kategori/harga + sort + paginasi                                        | C-02, C-03, P-01, P-02 lolos; filter kombinasi teruji                                                                                |
+| **M3 — Checkout**                    | Keranjang → porsi + tanggal kirim + alamat; snapshot harga; generate nomor                                                    | C-04 lolos; validasi tanggal/porsi/harga teruji                                                                                      |
 | **M4 — Order, Pembayaran & Invoice** | Daftar order 2 sisi, upload bukti, verifikasi merchant, **satu halaman invoice** yang diakses kedua pihak + cetak (print CSS) | M-06, M-07, C-05, C-06, C-07, **I-01..I-08** lolos; otorisasi invoice teruji (pihak ketiga 403); angka invoice identik di kedua sisi |
-| **M5 — Hardening** | Error pages, lapor merchant, polish responsif, README setup, suite penuh hijau | Semua test hijau; `composer run ci:check` bersih |
+| **M5 — Hardening**                   | Error pages, lapor merchant, polish responsif, README setup, suite penuh hijau                                                | Semua test hijau; `composer run ci:check` bersih                                                                                     |
 
 ---
 
 ## 10. Keputusan Final (sudah dikonfirmasi user)
 
-| # | Pertanyaan | Keputusan |
-|---|---|---|
-| O1 | Rekening merchant | **Manual per merchant** + QRIS statis opsional |
-| O2 | Cakupan kota | **Teks bebas multi-kota** + filter kota |
-| O3 | Batas minimal H pemesanan | **H+1** (bisa pesan untuk besok) |
-| O4 | Kuota harian merchant | **Tanpa batas** di MVP |
-| O5 | Database | **SQLite** untuk lokal (PHP lokal tanpa `pdo_pgsql`); PostgreSQL/MySQL jadi target produksi |
-| O6 | Folder baru | **Disetujui:** `app/Services/`, `app/Enums/`, `app/Policies/`, controller `Merchant/` & `Catalog/` |
-| O7 | Lokasi dokumen | `docs/` |
-| O8 | Format cetak invoice | **Print CSS** (tanpa package baru) |
-| O9 | Hak akses invoice | **Hanya 2 pihak** (kantor pemesan + merchant pemilik); tanpa link berbagi publik |
+| #   | Pertanyaan                | Keputusan                                                                                          |
+| --- | ------------------------- | -------------------------------------------------------------------------------------------------- |
+| O1  | Rekening merchant         | **Manual per merchant** + QRIS statis opsional                                                     |
+| O2  | Cakupan kota              | **Teks bebas multi-kota** + filter kota                                                            |
+| O3  | Batas minimal H pemesanan | **H+1** (bisa pesan untuk besok)                                                                   |
+| O4  | Kuota harian merchant     | **Tanpa batas** di MVP                                                                             |
+| O5  | Database                  | **SQLite** untuk lokal (PHP lokal tanpa `pdo_pgsql`); PostgreSQL/MySQL jadi target produksi        |
+| O6  | Folder baru               | **Disetujui:** `app/Services/`, `app/Enums/`, `app/Policies/`, controller `Merchant/` & `Catalog/` |
+| O7  | Lokasi dokumen            | `docs/`                                                                                            |
+| O8  | Format cetak invoice      | **Print CSS** (tanpa package baru)                                                                 |
+| O9  | Hak akses invoice         | **Hanya 2 pihak** (kantor pemesan + merchant pemilik); tanpa link berbagi publik                   |
 
 ---
 
 ## 11. Risiko & Mitigasi
 
-| Risiko | Dampak | Mitigasi |
-|---|---|---|
-| Bukti transfer palsu (tanpa gateway) | Sedang | Verifikasi manual merchant + kode unik + transparansi status |
-| Merchant abal-abal (tanpa admin) | Sedang | Flag `is_active` + lapor merchant + review manual DB |
-| Bentrok nomor order saat trafik tinggi | Rendah | Generate dalam transaksi + unique constraint + retry |
-| N+1 pada katalog & order list | Sedang | Eager loading wajib + test query count bila perlu |
-| File upload menumpuk di hosting gratis | Rendah | Batas ukuran 2MB, kompresi gambar, monitor kuota |
-| DB produksi berbeda dari SQLite lokal | Sedang | Hindari fitur spesifik driver; siapkan migrasi Postgres/MySQL |
+| Risiko                                 | Dampak | Mitigasi                                                      |
+| -------------------------------------- | ------ | ------------------------------------------------------------- |
+| Bukti transfer palsu (tanpa gateway)   | Sedang | Verifikasi manual merchant + kode unik + transparansi status  |
+| Merchant abal-abal (tanpa admin)       | Sedang | Flag `is_active` + lapor merchant + review manual DB          |
+| Bentrok nomor order saat trafik tinggi | Rendah | Generate dalam transaksi + unique constraint + retry          |
+| N+1 pada katalog & order list          | Sedang | Eager loading wajib + test query count bila perlu             |
+| File upload menumpuk di hosting gratis | Rendah | Batas ukuran 2MB, kompresi gambar, monitor kuota              |
+| DB produksi berbeda dari SQLite lokal  | Sedang | Hindari fitur spesifik driver; siapkan migrasi Postgres/MySQL |
+
 ---
 
 ## 12. Cara Menjalankan Proyek (Developer)
