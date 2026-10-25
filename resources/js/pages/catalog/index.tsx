@@ -4,12 +4,9 @@ import {
     BadgeCheck,
     ChevronLeft,
     ChevronRight,
-    Clock3,
     MapPin,
     Package,
     SearchX,
-    SlidersHorizontal,
-    Sparkles,
     UtensilsCrossed,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -74,12 +71,7 @@ const rupiah = new Intl.NumberFormat('id-ID', {
     maximumFractionDigits: 0,
 });
 
-export default function CatalogIndex({
-    menus,
-    categories,
-    cities,
-    filters,
-}: Props) {
+export default function CatalogIndex({ menus, categories, filters }: Props) {
     const activeCategory = categories.find(
         (category) => category.slug === filters.category,
     );
@@ -95,146 +87,22 @@ export default function CatalogIndex({
             <Head title="Katalog Katering" />
 
             <section className="border-b border-border/60 bg-linear-to-br from-brand-darker via-brand-dark to-brand text-white">
-                <div className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
-                    <nav
-                        aria-label="Breadcrumb"
-                        className="flex flex-wrap items-center gap-1.5 text-xs text-white/70"
-                    >
-                        <Link href={home()} className="hover:text-white">
-                            Beranda
-                        </Link>
-                        <ChevronRight className="size-3" />
-                        <span className="text-white">Katalog Katering</span>
-                        {activeCategory ? (
-                            <>
-                                <ChevronRight className="size-3" />
-                                <span className="text-white">
-                                    {activeCategory.name}
-                                </span>
-                            </>
-                        ) : null}
-                    </nav>
-
-                    <div className="mt-5 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-                        <div className="max-w-2xl">
-                            <h1 className="text-2xl font-extrabold tracking-tight text-balance sm:text-3xl lg:text-4xl">
-                                {heading}
-                            </h1>
-                            <p className="mt-3 max-w-xl text-sm leading-relaxed text-white/80 sm:text-base">
-                                Pilih menu dari katering terverifikasi. Pesan
-                                minimal H+1, bayar via transfer, dan pantau
-                                invoice bersama merchant.
-                            </p>
-
-                            <div className="mt-6 flex flex-wrap gap-2">
-                                {[
-                                    {
-                                        icon: Clock3,
-                                        label: 'Pesan minimal H+1',
-                                    },
-                                    {
-                                        icon: BadgeCheck,
-                                        label: 'Merchant terverifikasi',
-                                    },
-                                    {
-                                        icon: Package,
-                                        label: 'Invoice dua arah',
-                                    },
-                                ].map((item) => (
-                                    <span
-                                        key={item.label}
-                                        className="inline-flex items-center gap-1.5 rounded-full bg-white/12 px-3 py-1.5 text-xs font-medium ring-1 ring-white/20 backdrop-blur"
-                                    >
-                                        <item.icon className="size-3.5 text-sale" />
-                                        {item.label}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-3 gap-3 rounded-xl bg-white/10 p-4 ring-1 ring-white/15 backdrop-blur-sm sm:gap-6 sm:px-6">
-                            <Stat
-                                value={menus.total.toLocaleString('id-ID')}
-                                label="Menu tersedia"
-                            />
-                            <Stat
-                                value={cities.length.toLocaleString('id-ID')}
-                                label="Kota layanan"
-                            />
-                            <Stat
-                                value={categories.length.toLocaleString(
-                                    'id-ID',
-                                )}
-                                label="Kategori"
-                            />
-                        </div>
+                <div className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-12">
+                    <div className="max-w-2xl">
+                        <h1 className="text-2xl font-extrabold tracking-tight text-balance sm:text-3xl lg:text-4xl">
+                            {heading}
+                        </h1>
+                        <p className="mt-3 max-w-xl text-sm leading-relaxed text-white/80 sm:text-base">
+                            Pilih menu dari katering terverifikasi. Pesan
+                            minimal H+1, bayar via transfer, dan pantau invoice
+                            bersama merchant.
+                        </p>
                     </div>
                 </div>
             </section>
 
             <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                    <div className="scrollbar-none flex items-center gap-2 overflow-x-auto pb-1">
-                        <CategoryChip
-                            href={home.url({
-                                query: {
-                                    search: filters.search || undefined,
-                                    city: filters.city || undefined,
-                                },
-                            })}
-                            isActive={filters.category === ''}
-                            label="Semua"
-                        />
-                        {categories.map((category) => (
-                            <CategoryChip
-                                key={category.slug}
-                                href={home.url({
-                                    query: {
-                                        search: filters.search || undefined,
-                                        city: filters.city || undefined,
-                                        category: category.slug,
-                                    },
-                                })}
-                                isActive={filters.category === category.slug}
-                                label={category.name}
-                            />
-                        ))}
-                    </div>
-
-                    <div className="flex items-center gap-2 text-sm">
-                        <SlidersHorizontal className="size-4 text-muted-foreground" />
-                        <span className="text-muted-foreground">Lokasi:</span>
-                        <div className="scrollbar-none flex items-center gap-1.5 overflow-x-auto">
-                            <LocationChip
-                                href={home.url({
-                                    query: {
-                                        search: filters.search || undefined,
-                                        category: filters.category || undefined,
-                                    },
-                                })}
-                                isActive={filters.city === ''}
-                                label="Semua"
-                            />
-                            {cities.map((city) => (
-                                <LocationChip
-                                    key={city}
-                                    href={home.url({
-                                        query: {
-                                            search: filters.search || undefined,
-                                            category:
-                                                filters.category || undefined,
-                                            city,
-                                        },
-                                    })}
-                                    isActive={filters.city === city}
-                                    label={city}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                </div>
-
-                <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-border/60 pt-4">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/60 pb-4">
                     <p className="text-sm text-muted-foreground">
                         {menus.total === 0 ? (
                             'Tidak ada menu yang cocok'
@@ -282,69 +150,6 @@ export default function CatalogIndex({
                 {menus.last_page > 1 ? <Pagination menus={menus} /> : null}
             </div>
         </>
-    );
-}
-
-function Stat({ value, label }: { value: string; label: string }) {
-    return (
-        <div className="text-center">
-            <p className="text-lg font-extrabold text-white sm:text-2xl">
-                {value}
-            </p>
-            <p className="mt-0.5 text-[11px] text-white/70 sm:text-xs">
-                {label}
-            </p>
-        </div>
-    );
-}
-
-function CategoryChip({
-    href,
-    label,
-    isActive,
-}: {
-    href: string;
-    label: string;
-    isActive: boolean;
-}) {
-    return (
-        <Link
-            href={href}
-            prefetch
-            className={
-                isActive
-                    ? 'inline-flex shrink-0 items-center gap-1.5 rounded-full bg-brand px-3.5 py-1.5 text-sm font-semibold text-white shadow-sm'
-                    : 'inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border bg-background px-3.5 py-1.5 text-sm font-medium text-foreground transition-colors hover:border-brand/40 hover:bg-brand-soft hover:text-brand-dark'
-            }
-        >
-            {isActive ? <Sparkles className="size-3.5" /> : null}
-            {label}
-        </Link>
-    );
-}
-
-function LocationChip({
-    href,
-    label,
-    isActive,
-}: {
-    href: string;
-    label: string;
-    isActive: boolean;
-}) {
-    return (
-        <Link
-            href={href}
-            prefetch
-            className={
-                isActive
-                    ? 'inline-flex shrink-0 items-center gap-1 rounded-md bg-sale-soft px-2 py-1 text-xs font-semibold text-sale-dark'
-                    : 'inline-flex shrink-0 items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground'
-            }
-        >
-            <MapPin className="size-3" />
-            {label}
-        </Link>
     );
 }
 
