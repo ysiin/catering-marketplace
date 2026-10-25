@@ -71,35 +71,10 @@ const rupiah = new Intl.NumberFormat('id-ID', {
     maximumFractionDigits: 0,
 });
 
-export default function CatalogIndex({ menus, categories, filters }: Props) {
-    const activeCategory = categories.find(
-        (category) => category.slug === filters.category,
-    );
-
-    const heading = activeCategory
-        ? `Katering ${activeCategory.name}`
-        : filters.search !== ''
-          ? `Hasil untuk “${filters.search}”`
-          : 'Katering Makan Siang Kantor';
-
+export default function CatalogIndex({ menus, filters }: Props) {
     return (
         <>
             <Head title="Katalog Katering" />
-
-            <section className="border-b border-border/60 bg-linear-to-br from-brand-darker via-brand-dark to-brand text-white">
-                <div className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-12">
-                    <div className="max-w-2xl">
-                        <h1 className="text-2xl font-extrabold tracking-tight text-balance sm:text-3xl lg:text-4xl">
-                            {heading}
-                        </h1>
-                        <p className="mt-3 max-w-xl text-sm leading-relaxed text-white/80 sm:text-base">
-                            Pilih menu dari katering terverifikasi. Pesan
-                            minimal H+1, bayar via transfer, dan pantau invoice
-                            bersama merchant.
-                        </p>
-                    </div>
-                </div>
-            </section>
 
             <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
                 <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/60 pb-4">

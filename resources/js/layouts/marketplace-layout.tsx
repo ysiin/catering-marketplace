@@ -12,7 +12,6 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import type { FormEvent } from 'react';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
@@ -50,48 +49,13 @@ type MarketplacePageProps = {
     filters?: CatalogFilters;
 };
 
-const footerGroups = [
-    {
-        title: 'Sekotak',
-        links: [
-            { label: 'Tentang Kami', href: '/#tentang' },
-            { label: 'Cara Kerja', href: '/#cara-kerja' },
-            { label: 'Karier', href: '/#karier' },
-        ],
-    },
-    {
-        title: 'Untuk Kantor',
-        links: [
-            { label: 'Cara Pesan', href: '/#cara-pesan' },
-            { label: 'Metode Pembayaran', href: '/#pembayaran' },
-            { label: 'Pertanyaan Umum', href: '/#faq' },
-        ],
-    },
-    {
-        title: 'Untuk Katering',
-        links: [
-            { label: 'Jualan di Sekotak', href: '/#jualan' },
-            { label: 'Panduan Merchant', href: '/#merchant' },
-            { label: 'Ketentuan Layanan', href: '/#ketentuan' },
-        ],
-    },
-    {
-        title: 'Bantuan',
-        links: [
-            { label: 'Hubungi Kami', href: '/#kontak' },
-            { label: 'WhatsApp', href: '/#whatsapp' },
-            { label: 'Kebijakan Privasi', href: '/#privasi' },
-        ],
-    },
-];
-
 export default function MarketplaceLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
     const page = usePage<MarketplacePageProps>();
-    const { auth, categories = [], filters } = page.props;
+    const { auth, categories = [], cities = [], filters } = page.props;
 
     const [term, setTerm] = useState(filters?.search ?? '');
     const [mobileOpen, setMobileOpen] = useState(false);
@@ -431,12 +395,82 @@ export default function MarketplaceLayout({
                             ))}
                         </nav>
 
-                        <div className="ml-auto flex items-center gap-1.5 text-sm text-brand-dark/80">
-                            <MapPin className="size-4 text-sale" />
-                            <span className="font-medium">
-                                {filters?.city ? filters.city : 'Semua Lokasi'}
-                            </span>
-                        </div>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <button
+                                    type="button"
+                                    className="ml-auto flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-sm font-medium text-brand-dark/80 transition-colors hover:bg-white"
+                                >
+                                    <MapPin className="size-4 text-sale" />
+                                    {filters?.city
+                                        ? filters.city
+                                        : 'Semua Lokasi'}
+                                    <ChevronDown className="size-3.5 opacity-70" />
+                                </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent
+                                align="end"
+                                className="max-h-80 w-56 overflow-y-auto p-2"
+                            >
+                                <DropdownMenuItem asChild>
+                                    <Link
+                                        href={home.url({
+                                            query: {
+                                                search:
+                                                    filters?.search ||
+                                                    undefined,
+                                                category:
+                                                    filters?.category ||
+                                                    undefined,
+                                            },
+                                        })}
+                                        className={
+                                            !filters?.city
+                                                ? 'flex w-full items-center gap-2 font-semibold text-brand'
+                                                : 'flex w-full items-center gap-2'
+                                        }
+                                    >
+                                        <MapPin className="size-4 text-brand" />
+                                        <span className="text-sm">
+                                            Semua Lokasi
+                                        </span>
+                                    </Link>
+                                </DropdownMenuItem>
+                                {cities.length === 0 ? (
+                                    <p className="px-2 py-3 text-sm text-muted-foreground">
+                                        Belum ada lokasi.
+                                    </p>
+                                ) : (
+                                    cities.map((city) => (
+                                        <DropdownMenuItem key={city} asChild>
+                                            <Link
+                                                href={home.url({
+                                                    query: {
+                                                        search:
+                                                            filters?.search ||
+                                                            undefined,
+                                                        category:
+                                                            filters?.category ||
+                                                            undefined,
+                                                        city,
+                                                    },
+                                                })}
+                                                className={
+                                                    filters?.city === city
+                                                        ? 'flex w-full items-center gap-2 font-semibold text-brand'
+                                                        : 'flex w-full items-center gap-2'
+                                                }
+                                            >
+                                                <MapPin className="size-4 text-sale" />
+                                                <span className="text-sm">
+                                                    {city}
+                                                </span>
+                                            </Link>
+                                        </DropdownMenuItem>
+                                    ))
+                                )}
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                     </div>
                 </div>
             </header>
@@ -444,9 +478,9 @@ export default function MarketplaceLayout({
             <main className="flex-1">{children}</main>
 
             <footer className="mt-16 border-t border-border/70 bg-brand-soft/50 print:hidden">
-                <div className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-                    <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-5">
-                        <div className="lg:col-span-1">
+                <div className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+                    <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
                             <Link
                                 href={home()}
                                 className="flex items-center gap-2.5"
@@ -463,38 +497,11 @@ export default function MarketplaceLayout({
                                 kantor. Pesan dari katering terverifikasi di
                                 kotamu, antar sesuai jadwal.
                             </p>
-                            <Badge className="mt-4 border-transparent bg-success-soft text-success">
-                                Katering terverifikasi
-                            </Badge>
                         </div>
-
-                        {footerGroups.map((group) => (
-                            <div key={group.title}>
-                                <h3 className="text-sm font-semibold text-brand-dark">
-                                    {group.title}
-                                </h3>
-                                <ul className="mt-3 space-y-2">
-                                    {group.links.map((link) => (
-                                        <li key={link.label}>
-                                            <a
-                                                href={link.href}
-                                                className="text-sm text-muted-foreground transition-colors hover:text-brand"
-                                            >
-                                                {link.label}
-                                            </a>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        ))}
                     </div>
 
-                    <div className="mt-10 flex flex-col gap-2 border-t border-border/70 pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-                        <p>
-                            &copy; {new Date().getFullYear()} Sekotak.
-                            Menghubungkan kantor dengan katering terpercaya.
-                        </p>
-                        <p>Makan siang kantor, beres.</p>
+                    <div className="mt-8 border-t border-border/70 pt-6 text-xs text-muted-foreground">
+                        <p>&copy; {new Date().getFullYear()} Sekotak.</p>
                     </div>
                 </div>
             </footer>
