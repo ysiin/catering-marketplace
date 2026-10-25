@@ -18,6 +18,8 @@ void createInertiaApp({
                 return MarketplaceLayout;
             case name === 'invoice/show':
                 return MarketplaceLayout;
+            case name.startsWith('dashboard/'):
+                return AppLayout;
             case name.startsWith('merchant/'):
                 return [AppLayout, MerchantLayout];
             case name.startsWith('auth/'):

@@ -2,6 +2,7 @@ import { Link, usePage } from '@inertiajs/react';
 import {
     ClipboardList,
     LayoutGrid,
+    ShoppingBag,
     Store,
     UtensilsCrossed,
 } from 'lucide-react';
@@ -17,7 +18,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
+import { dashboard, home } from '@/routes';
 import { index as menuIndex } from '@/routes/merchant/menus';
 import { index as orderIndex } from '@/routes/merchant/orders';
 import { edit as editMerchantProfile } from '@/routes/merchant/profile';
@@ -32,6 +33,11 @@ export function AppSidebar() {
             title: 'Dashboard',
             href: dashboard(),
             icon: LayoutGrid,
+        },
+        {
+            title: 'Katalog',
+            href: home(),
+            icon: ShoppingBag,
         },
         ...(auth?.role === 'merchant'
             ? [

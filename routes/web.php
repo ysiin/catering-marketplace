@@ -4,6 +4,7 @@ use App\Http\Controllers\Catalog\CatalogController;
 use App\Http\Controllers\Catalog\MerchantController as CatalogMerchantController;
 use App\Http\Controllers\Customer\CheckoutController;
 use App\Http\Controllers\Customer\OrderController as CustomerOrderController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\Merchant\MenuController;
 use App\Http\Controllers\Merchant\OrderController as MerchantOrderController;
@@ -15,7 +16,7 @@ Route::get('katering/{merchant:slug}', [CatalogMerchantController::class, 'show'
     ->name('catering.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('dashboard', 'dashboard')->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('orders/{order:order_no}/invoice', [InvoiceController::class, 'show'])
         ->name('orders.invoice');

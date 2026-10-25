@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Merchant;
 use App\Models\User;
 
 test('the catalogue is the public entry point', function () {
@@ -20,6 +21,7 @@ test('authenticated users can reach the dashboard', function () {
 
 test('the shared auth props expose the user role', function () {
     $user = User::factory()->merchant()->create();
+    Merchant::factory()->create(['user_id' => $user->id]);
 
     $this->actingAs($user)
         ->get(route('dashboard'))
