@@ -16,6 +16,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { home } from '@/routes';
 import { create as checkoutCreate } from '@/routes/checkout';
+import { show as cateringShow } from '@/routes/catering';
 
 type Category = {
     name: string;
@@ -394,12 +395,16 @@ function MenuTile({ menu }: { menu: MenuCard }) {
                 </p>
 
                 <div className="mt-auto space-y-1.5 border-t border-border/60 pt-3">
-                    <p className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
+                    <Link
+                        href={cateringShow(menu.merchant.slug)}
+                        prefetch
+                        className="flex items-center gap-1.5 text-xs font-semibold text-foreground hover:text-brand"
+                    >
                         <BadgeCheck className="size-3.5 shrink-0 text-success" />
                         <span className="line-clamp-1">
                             {menu.merchant.name}
                         </span>
-                    </p>
+                    </Link>
                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
                         {menu.merchant.city ? (
                             <span className="flex items-center gap-1">

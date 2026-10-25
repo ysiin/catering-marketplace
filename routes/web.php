@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Catalog\CatalogController;
+use App\Http\Controllers\Catalog\MerchantController as CatalogMerchantController;
 use App\Http\Controllers\Customer\CheckoutController;
 use App\Http\Controllers\Customer\OrderController as CustomerOrderController;
 use App\Http\Controllers\InvoiceController;
@@ -10,6 +11,8 @@ use App\Http\Controllers\Merchant\ProfileController as MerchantProfileController
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [CatalogController::class, 'index'])->name('home');
+Route::get('katering/{merchant:slug}', [CatalogMerchantController::class, 'show'])
+    ->name('catering.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');

@@ -14,7 +14,7 @@ void createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
     layout: (name) => {
         switch (true) {
-            case name === 'catalog/index':
+            case name.startsWith('catalog/'):
                 return MarketplaceLayout;
             case name === 'invoice/show':
                 return MarketplaceLayout;
