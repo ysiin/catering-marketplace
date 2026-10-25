@@ -1,8 +1,6 @@
 import { Link, router, usePage } from '@inertiajs/react';
 import {
     ChevronDown,
-    Download,
-    HelpCircle,
     LayoutGrid,
     LogOut,
     MapPin,
@@ -32,7 +30,7 @@ import {
     SheetTrigger,
 } from '@/components/ui/sheet';
 import { dashboard, home, login, logout, register } from '@/routes';
-import type { Auth, UserRole } from '@/types';
+import type { Auth } from '@/types';
 
 type CategoryOption = {
     name: string;
@@ -51,11 +49,6 @@ type MarketplacePageProps = {
     cities?: string[];
     filters?: CatalogFilters;
 };
-
-const utilityLinks = [
-    { label: 'Panduan Berbelanja', href: '/#panduan' },
-    { label: 'Panduan Berjualan', href: '/#jualan' },
-];
 
 const footerGroups = [
     {
@@ -119,64 +112,8 @@ export default function MarketplaceLayout({
         );
     };
 
-    const roleLabel = roleName(auth?.role ?? null);
-
     return (
         <div className="flex min-h-svh flex-col bg-background">
-            <div className="hidden bg-brand-darker text-brand-soft md:block print:hidden">
-                <div className="mx-auto flex h-9 w-full max-w-7xl items-center justify-between px-4 text-xs sm:px-6 lg:px-8">
-                    <nav className="flex items-center gap-5">
-                        {utilityLinks.map((link) => (
-                            <a
-                                key={link.label}
-                                href={link.href}
-                                className="transition-colors hover:text-white"
-                            >
-                                {link.label}
-                            </a>
-                        ))}
-                    </nav>
-                    <nav className="flex items-center gap-5">
-                        <a
-                            href="/#unduh"
-                            className="flex items-center gap-1.5 transition-colors hover:text-white"
-                        >
-                            <Download className="size-3.5" />
-                            Unduh Aplikasi
-                        </a>
-                        <a
-                            href="/#bantuan"
-                            className="flex items-center gap-1.5 transition-colors hover:text-white"
-                        >
-                            <HelpCircle className="size-3.5" />
-                            Bantuan
-                        </a>
-                        {auth?.user ? (
-                            <Link
-                                href={dashboard()}
-                                className="flex items-center gap-1.5 font-medium text-white"
-                            >
-                                <UserRound className="size-3.5" />
-                                {auth.user.name}
-                                {roleLabel ? (
-                                    <span className="rounded bg-white/15 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide uppercase">
-                                        {roleLabel}
-                                    </span>
-                                ) : null}
-                            </Link>
-                        ) : (
-                            <Link
-                                href={login()}
-                                className="flex items-center gap-1.5 font-medium text-white"
-                            >
-                                <UserRound className="size-3.5" />
-                                Masuk / Daftar
-                            </Link>
-                        )}
-                    </nav>
-                </div>
-            </div>
-
             <header className="sticky top-0 z-40 border-b border-border/70 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/85 print:hidden">
                 <div className="mx-auto flex w-full max-w-7xl flex-col gap-3 px-4 py-3 sm:px-6 lg:px-8">
                     <div className="flex items-center gap-3 lg:gap-6">
@@ -563,16 +500,4 @@ export default function MarketplaceLayout({
             </footer>
         </div>
     );
-}
-
-function roleName(role: UserRole | null): string | null {
-    if (role === 'merchant') {
-        return 'Katering';
-    }
-
-    if (role === 'customer') {
-        return 'Kantor';
-    }
-
-    return null;
 }
