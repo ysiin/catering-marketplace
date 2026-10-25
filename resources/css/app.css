@@ -195,3 +195,29 @@
         display: none;
     }
 }
+
+/* Invoice printing: A4-friendly, no browser chrome artifacts. */
+@media print {
+    @page {
+        size: A4;
+        margin: 12mm;
+    }
+
+    body {
+        background: #fff;
+    }
+
+    .invoice-actions {
+        display: none !important;
+    }
+
+    .invoice-page {
+        max-width: none;
+        padding: 0;
+    }
+
+    .invoice-sheet {
+        border: 0;
+        box-shadow: none;
+    }
+}

@@ -5,6 +5,7 @@ import { useCurrentUrl } from '@/hooks/use-current-url';
 import { cn, toUrl } from '@/lib/utils';
 import { edit as editProfile } from '@/routes/merchant/profile';
 import { index as menuIndex } from '@/routes/merchant/menus';
+import { index as orderIndex } from '@/routes/merchant/orders';
 import type { NavItem } from '@/types';
 
 const navItems: NavItem[] = [
@@ -16,6 +17,11 @@ const navItems: NavItem[] = [
     {
         title: 'Menu Saya',
         href: menuIndex(),
+        icon: null,
+    },
+    {
+        title: 'Pesanan Masuk',
+        href: orderIndex(),
         icon: null,
     },
 ];

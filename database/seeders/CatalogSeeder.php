@@ -2,12 +2,17 @@
 
 namespace Database\Seeders;
 
+use App\Enums\OrderStatus;
+use App\Enums\PaymentMethod;
+use App\Enums\PaymentStatus;
 use App\Enums\UserRole;
 use App\Models\Category;
 use App\Models\Menu;
 use App\Models\Merchant;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 class CatalogSeeder extends Seeder
@@ -17,7 +22,7 @@ class CatalogSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
+        $customer = User::factory()->create([
             'name' => 'Kantor Demo',
             'email' => 'kantor@example.com',
             'role' => UserRole::Customer->value,
@@ -38,11 +43,15 @@ class CatalogSeeder extends Seeder
             ]),
         ]);
 
+        $seededMerchants = [];
+
         foreach ($this->merchants() as $data) {
             $menus = $data['menus'];
             unset($data['menus']);
 
             $merchant = Merchant::factory()->create($data);
+
+            $seededMerchants[] = $merchant;
 
             foreach ($menus as [$name, $category, $price, $minOrder, $description]) {
                 Menu::factory()->create([
@@ -55,6 +64,65 @@ class CatalogSeeder extends Seeder
                     'min_order' => $minOrder,
                 ]);
             }
+        }
+
+        $this->seedDemoOrders($customer, $seededMerchants);
+    }
+
+    /**
+     * Seed a few orders so both portals have data to explore.
+     *
+     * @param  array<int, Merchant>  $merchants
+     */
+    private function seedDemoOrders(User $customer, array $merchants): void
+    {
+        $scenarios = [
+            ['merchant' => 0, 'days' => 1, 'qty' => 25, 'status' => OrderStatus::Confirmed, 'payment' => PaymentStatus::Verified],
+            ['merchant' => 1, 'days' => 2, 'qty' => 15, 'status' => OrderStatus::PendingConfirmation, 'payment' => PaymentStatus::WaitingVerification],
+            ['merchant' => 2, 'days' => 3, 'qty' => 20, 'status' => OrderStatus::PendingPayment, 'payment' => PaymentStatus::Unpaid],
+        ];
+
+        foreach ($scenarios as $index => $scenario) {
+            $merchant = $merchants[$scenario['merchant']] ?? $merchants[0];
+            $menu = $merchant->menus()->orderBy('price')->first();
+
+            if ($menu === null) {
+                continue;
+            }
+
+            $subtotal = $menu->price * $scenario['qty'];
+            $uniqueCode = 100 + $index;
+            $suffix = str_pad((string) ($index + 1), 4, '0', STR_PAD_LEFT);
+            $date = now()->format('Ymd');
+
+            $order = Order::create([
+                'order_no' => "ORD-{$date}-{$suffix}",
+                'invoice_no' => "INV-{$date}-{$suffix}",
+                'customer_id' => $customer->id,
+                'merchant_id' => $merchant->id,
+                'delivery_date' => Carbon::tomorrow()->addDays($scenario['days'] - 1)->startOfDay(),
+                'qty_porsi' => $scenario['qty'],
+                'delivery_address' => 'Gedung Menara Nusantara, Lantai 8, Ruang HRD. Penerima: Ibu Ratna (081290001111).',
+                'notes' => $index === 0 ? 'Tanpa sambal untuk 5 kotak.' : null,
+                'subtotal' => $subtotal,
+                'unique_code' => $uniqueCode,
+                'total' => $subtotal + $uniqueCode,
+                'status' => $scenario['status'],
+            ]);
+
+            $order->items()->create([
+                'menu_id' => $menu->id,
+                'menu_name_snapshot' => $menu->name,
+                'price_snapshot' => $menu->price,
+                'qty' => $scenario['qty'],
+                'subtotal' => $subtotal,
+            ]);
+
+            $order->payment()->create([
+                'method' => PaymentMethod::BankTransfer,
+                'status' => $scenario['payment'],
+                'verified_at' => $scenario['payment'] === PaymentStatus::Verified ? now() : null,
+            ]);
         }
     }
 

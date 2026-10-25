@@ -1,6 +1,7 @@
 import { Link, usePage } from '@inertiajs/react';
 import {
     BookOpen,
+    ClipboardList,
     FolderGit2,
     LayoutGrid,
     Store,
@@ -21,7 +22,9 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard, home } from '@/routes';
 import { index as menuIndex } from '@/routes/merchant/menus';
+import { index as orderIndex } from '@/routes/merchant/orders';
 import { edit as editMerchantProfile } from '@/routes/merchant/profile';
+import { index as customerOrderIndex } from '@/routes/orders';
 import type { Auth, NavItem } from '@/types';
 
 const footerNavItems: NavItem[] = [
@@ -62,6 +65,20 @@ export function AppSidebar() {
                       title: 'Profil Katering',
                       href: editMerchantProfile(),
                       icon: Store,
+                  },
+                  {
+                      title: 'Pesanan Masuk',
+                      href: orderIndex(),
+                      icon: ClipboardList,
+                  },
+              ]
+            : []),
+        ...(auth?.role === 'customer'
+            ? [
+                  {
+                      title: 'Pesanan Saya',
+                      href: customerOrderIndex(),
+                      icon: ClipboardList,
                   },
               ]
             : []),

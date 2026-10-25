@@ -15,6 +15,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { home } from '@/routes';
+import { create as checkoutCreate } from '@/routes/checkout';
 
 type Category = {
     name: string;
@@ -411,6 +412,17 @@ function MenuTile({ menu }: { menu: MenuCard }) {
                             Min. {menu.min_order} porsi
                         </span>
                     </div>
+
+                    <Button
+                        asChild
+                        size="sm"
+                        className="mt-1 w-full bg-brand hover:bg-brand-dark"
+                    >
+                        <Link href={checkoutCreate(menu.id)}>
+                            Pesan sekarang
+                            <ArrowRight className="size-3.5" />
+                        </Link>
+                    </Button>
                 </div>
             </div>
         </article>

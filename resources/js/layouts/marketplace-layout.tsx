@@ -123,7 +123,7 @@ export default function MarketplaceLayout({
 
     return (
         <div className="flex min-h-svh flex-col bg-background">
-            <div className="hidden bg-brand-darker text-brand-soft md:block">
+            <div className="hidden bg-brand-darker text-brand-soft md:block print:hidden">
                 <div className="mx-auto flex h-9 w-full max-w-7xl items-center justify-between px-4 text-xs sm:px-6 lg:px-8">
                     <nav className="flex items-center gap-5">
                         {utilityLinks.map((link) => (
@@ -177,7 +177,7 @@ export default function MarketplaceLayout({
                 </div>
             </div>
 
-            <header className="sticky top-0 z-40 border-b border-border/70 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/85">
+            <header className="sticky top-0 z-40 border-b border-border/70 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/85 print:hidden">
                 <div className="mx-auto flex w-full max-w-7xl flex-col gap-3 px-4 py-3 sm:px-6 lg:px-8">
                     <div className="flex items-center gap-3 lg:gap-6">
                         <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
@@ -424,7 +424,7 @@ export default function MarketplaceLayout({
                     </form>
                 </div>
 
-                <div className="hidden border-t border-border/60 bg-brand-soft/40 lg:block">
+                <div className="hidden border-t border-border/60 bg-brand-soft/40 lg:block print:hidden">
                     <div className="mx-auto flex h-11 w-full max-w-7xl items-center gap-1 px-4 sm:px-6 lg:px-8">
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -506,7 +506,7 @@ export default function MarketplaceLayout({
 
             <main className="flex-1">{children}</main>
 
-            <footer className="mt-16 border-t border-border/70 bg-brand-soft/50">
+            <footer className="mt-16 border-t border-border/70 bg-brand-soft/50 print:hidden">
                 <div className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
                     <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-5">
                         <div className="lg:col-span-1">
