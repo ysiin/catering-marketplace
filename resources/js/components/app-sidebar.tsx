@@ -1,14 +1,11 @@
 import { Link, usePage } from '@inertiajs/react';
 import {
-    BookOpen,
     ClipboardList,
-    FolderGit2,
     LayoutGrid,
     Store,
     UtensilsCrossed,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
-import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import {
@@ -20,30 +17,12 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard, home } from '@/routes';
+import { dashboard } from '@/routes';
 import { index as menuIndex } from '@/routes/merchant/menus';
 import { index as orderIndex } from '@/routes/merchant/orders';
 import { edit as editMerchantProfile } from '@/routes/merchant/profile';
 import { index as customerOrderIndex } from '@/routes/orders';
 import type { Auth, NavItem } from '@/types';
-
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Katalog Sekotak',
-        href: home(),
-        icon: Store,
-    },
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: FolderGit2,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
-    },
-];
 
 export function AppSidebar() {
     const { auth } = usePage<{ auth: Auth }>().props;
@@ -103,7 +82,6 @@ export function AppSidebar() {
             </SidebarContent>
 
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
                 <NavUser />
             </SidebarFooter>
         </Sidebar>
