@@ -23,8 +23,8 @@ class CatalogSeeder extends Seeder
     public function run(): void
     {
         $customer = User::factory()->create([
-            'name' => 'Kantor Demo',
-            'email' => 'kantor@example.com',
+            'name' => 'Yasin',
+            'email' => 'yasin@mail.com',
             'role' => UserRole::Customer->value,
         ]);
 
@@ -134,8 +134,8 @@ class CatalogSeeder extends Seeder
     private function merchants(): array
     {
         $demoUser = User::factory()->merchant()->create([
-            'name' => 'Katering Demo',
-            'email' => 'merchant@example.com',
+            'name' => 'Indah Katering',
+            'email' => 'indahkatering@mail.com',
         ]);
 
         return [
